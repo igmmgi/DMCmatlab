@@ -14,7 +14,7 @@ git clone https://github.com/igmmgi/DMCmatlab.git
 
 ## Basic Examples
 ```matlab
-res = dmcSim();            # Fig 3
-res = dmcSim('tau', 150);  # Fig 4
+res = dmcSim();            % Fig 3
+res = dmcSim('tau', 150);  % Fig 4
 ```
 
