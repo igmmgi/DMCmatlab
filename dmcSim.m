@@ -29,7 +29,6 @@ function res = dmcSim(varargin)
 % 'nTrlData',  integer beteen ~5 and 10
 % 'cafBins',   bins to calculate conditional accuracy functions
 % 'deltaBins', bins to calculate incomp-comp delta plots
-% 'useGPU',    true/false (requires nvidia graphics card)
 % 'makePlots', true/false
 %
 % Outputs:
