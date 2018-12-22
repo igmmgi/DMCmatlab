@@ -14,11 +14,11 @@ figH.Units    = 'centimeters';
 figH.Position = [0 0 35 30];
 
 % lower left panel (just plot first 5 trials)
-h(1) = subplot(6, 4, [13 14 17 18 21 22]);
+h(1) = subplot(6, 4, [1 2 5 6 9 10]);
 plotDMC_activation(res)
 
 % upper left panel
-h(2) = subplot(6, 4, [1 2 5 6 9 10]);
+h(2) = subplot(6, 4, [13 14 17 18 21 22]);
 plotDMC_trials(res)
 
 % upper right panel (left)

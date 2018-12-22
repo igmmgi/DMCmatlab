@@ -6,5 +6,5 @@ function plotDMC_pdf(res)
 
 hold on, grid off, box on
 plot(xiC, fC, 'g', xiI, fI, 'r');
-xlabel(''), ylabel('PDF');
+xlabel('Time (ms)'), ylabel('PDF');
 ylim([-0.0005 10e-03])
