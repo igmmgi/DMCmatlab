@@ -123,7 +123,7 @@ end
 res = resStruct(prms);
 
 %% simulation
-drift  = prms.amp .* exp(-(1:prms.tmax) ./ prms.tau) .* ((exp(1) .* (1:prms.tmax) ./ (prms.aaShape-1) ./prms.tau) .^(prms.aaShape-1));
+drift  = prms.amp .* exp(-(1:prms.tmax) ./ prms.tau) .* ((exp(1) .* (1:prms.tmax) ./ (prms.aaShape-1) ./prms.tau) .^ (prms.aaShape-1));
 
 for comp = {'comp', 'incomp'}
   
@@ -146,8 +146,9 @@ for comp = {'comp', 'incomp'}
   
   %% find RTs for correct/incorrect trials (point where X exceeds crit +-bounds)
   [~, rt] = max(abs(activation) > prms.bnds, [], 2);
+  rt(rt == 1, 1) = prms.tmax;  % does not reach boundary classified as error
   rt_idx  = sub2ind(size(activation), 1:size(activation, 1), rt');
-  rt      = [rt + normrnd(prms.resMean, prms.resSD, prms.nTrl, 1), (activation(rt_idx) < 0)'];
+  rt      = [rt + normrnd(prms.resMean, prms.resSD, prms.nTrl, 1), (activation(rt_idx) < prms.bnds)'];
   
   %% calculate conditional accuracy functions (CAF)
   [~, ~, rt(:, 3)]  = histcounts(rt(:, 1), prctile(rt(:, 1), prms.cafBins));
