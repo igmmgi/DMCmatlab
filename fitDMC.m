@@ -66,7 +66,6 @@ constraints.fixed = [0    0 0 0   0   0   0   0 0];
 constraints.steps = [1    1 1 1   1   1   1   1 1];
 numIterations     = 500;
 nTrl              = 50000;
-useGPU            = false;
 method            = str2func('fminsearchbnd');
 exportFig         = false;
 expName           = 'DMC Fit';
@@ -86,8 +85,6 @@ for i = 1:2:length(varargin)
       numIterations = varargin{i+1};
     case 'nTrl'
       nTrl = varargin{i+1};
-    case 'useGPU'
-      useGPU = varargin{i+1};
     case 'method'
       method = str2func(varargin{i+1});
     case 'exportFig'
@@ -108,7 +105,7 @@ opts.TolX        = 1.e-12;
 opts.MaxFunEvals = numIterations;
 
 % function to optimize
-fun = @(x) minimizeCostValue(x(1), x(2), x(3), x(4), x(5), x(6), x(7), x(8), x(9), datOb, nTrl, useGPU);
+fun = @(x) minimizeCostValue(x(1), x(2), x(3), x(4), x(5), x(6), x(7), x(8), x(9), datOb, nTrl);
 [endVals, fval, ~, out] = method(fun, startVals, opts, constraints);
 
 % dmc sim
@@ -144,8 +141,8 @@ plotDMC_fit(expName, datTh, datOb, table1, table2, exportFig);
 end
 
 %%
-function costValue = minimizeCostValue(amp, tau, aaShape, mu, sigma, bnds, resMean, resSD, spShape, datOb, nTrl, useGPU)
-% function costValue = minimizeCostValue(amp, tau, aa_shape, mu, sigma, bnds, resMean, resSD, spShape, datOb, nTrl, useGPU)
+function costValue = minimizeCostValue(amp, tau, aaShape, mu, sigma, bnds, resMean, resSD, spShape, datOb, nTrl)
+% function costValue = minimizeCostValue(amp, tau, aa_shape, mu, sigma, bnds, resMean, resSD, spShape, datOb, nTrl)
 
 datTh = dmcSim('amp', amp, 'tau', tau, 'aaShape', aaShape, 'mu', mu, 'sigma', sigma, ...
   'bnds', bnds, 'resMean', resMean, 'resSD', resSD, 'nTrl', nTrl, ...
