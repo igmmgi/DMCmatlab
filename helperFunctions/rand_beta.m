@@ -10,11 +10,10 @@ function x = rand_beta(num, shape, lim)
 % hist(x, 50)
 
 if nargin == 2
-  lim   = [0 1];  
+  lim   = [0 1];
 elseif nargin == 1
   lim   = [0 1];
   shape = 3;
-  
 elseif nargin == 0
   lim   = [0 1];
   shape = 3;

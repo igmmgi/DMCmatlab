@@ -9,8 +9,6 @@ if nargin == 0
 end
 
 % read data from flankerTask1.txt into MATLAB table
-% NB. must be better way of doing some of this! MATLAB table datatype seems
-%   limited compated to R with dplyr!
 dat = readtable('flankerTask1.txt');
 
 % define outliers
@@ -20,6 +18,8 @@ dat.Outlier = dat.RT < 200 | dat.RT > 1200;
 varNames = {'SNo', 'Comp', 'nTotal', 'nCorr', 'nErr', 'nOut', 'rtCorr', 'sdCorr', 'perErr','rtErr', 'sdErr'};
 datAggVP = array2table(nan(0, 11), 'VariableNames', varNames);
 
+% NB. must be better way of doing some of this! MATLAB table datatype seems
+%   limited compated to R with dplyr!
 for vp = transpose(unique(dat.VP))
   for comp = {'comp', 'incomp'}
     
