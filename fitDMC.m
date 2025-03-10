@@ -53,10 +53,7 @@ function fitDMC(datOb, varargin)
 % Examples 1
 % datOb = flankerTask1;
 % fitDMC(datOb)
-%
-% Example 2
-% datOb = flankerTask2;
-% fitDMC(datOb, 'numIterations', 10, 'nTrl', 10000)
+
 
 %% setup
 startVals         = [20 100 2 0.5 4  75 350 100 3];
@@ -64,7 +61,7 @@ constraints.min   = [15  20 1 0   2  25 100  10 2];
 constraints.max   = [25 180 3 1   6 125 600 200 4];
 constraints.fixed = [0    0 0 0   0   0   0   0 0];
 constraints.steps = [1    1 1 1   1   1   1   1 1];
-numIterations     = 500;
+numIterations     = 200;
 nTrl              = 50000;
 method            = str2func('fminsearchbnd');
 exportFig         = false;
@@ -159,10 +156,13 @@ function costValue = calcCostvalue(datTh, datOb)
 n_err = size(datTh.caf, 2)    * 2;
 n_rt  = size(datTh.rtDist, 2) * 2;
 
-costCAF = sqrt((1/n_err) * sum((sum(datTh.caf - datOb.caf).^2)));
-costRT  = sqrt((1/n_rt)  * sum((sum(datTh.rtDist(1:2, :) - datOb.rtDist(1:2, :)).^2)));
+costCAF = sqrt((1/n_err) * sum((sum((datTh.caf - datOb.caf).^2))));
+costRT  = sqrt((1/n_rt)  * sum((sum((datTh.rtDist(1:2, :) - datOb.rtDist(1:2, :)).^2))));
 
-costValue = (((1 - (2*n_rt)/(2*n_rt + 2*n_err)) * 1500) * costCAF) + costRT;
+weightRT  = n_rt / (n_rt + n_err);
+weightCAF = (1 - weightRT) * 1500;
+ 
+costValue = (weightCAF * costCAF) + (weightRT * costRT);
 
 end
 

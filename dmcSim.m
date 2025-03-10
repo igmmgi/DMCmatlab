@@ -123,16 +123,18 @@ end
 res = resStruct(prms);
 
 %% simulation
-drift  = prms.amp .* exp(-(1:prms.tmax) ./ prms.tau) .* ((exp(1) .* (1:prms.tmax) ./ (prms.aaShape-1) ./prms.tau) .^ (prms.aaShape-1));
+t = 1:prms.tmax;
+drift = prms.amp .* exp(-t ./ prms.tau) .* (exp(1) .* t ./ (prms.aaShape-1) ./ prms.tau) .^ (prms.aaShape-1); 
 
 for comp = {'comp', 'incomp'}
   
   if strcmp(comp, 'comp'); sign = 1; else, sign = -1; end
   
   if ~prms.varDR  % constant drift rate across trials
-    muVec =  (sign * drift) .* ((prms.aaShape-1) ./ (1:prms.tmax)-1/prms.tau) + prms.mu;  % eq7/eq8
+    muVec =  (sign * drift) .* ((prms.aaShape-1) ./ t - 1/prms.tau) + prms.mu;  % eq7/eq8
   else  % variable drift rate (vdr): beta distribution
-    muVec =  (sign * drift) .* ((prms.aaShape-1) ./ (1:prms.tmax)-1/prms.tau) + rand_beta(prms.nTrl, prms.drShape, prms.drLim);  % eq7/eq8
+    res.prms.mu = rand_beta(prms.nTrl, prms.drShape, prms.drLim);
+    muVec =  repmat((sign * drift) .* ((prms.aaShape-1) ./ t - 1/prms.tau), prms.nTrl, 1) + res.prms.mu;  % eq7/eq8
   end
   
   activation = muVec + (prms.sigma*randn(prms.nTrl, prms.tmax, 'single'));
